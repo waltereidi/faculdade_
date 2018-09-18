@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+main()
+{while(1)
+{
+
+	float at, ele , a2,a3;
+	printf("\n att / ele ");
+	scanf ("%f %f",&at, &ele);
+	
+	ele= ele /100 ;
+	at = at *1.34 ;
+	a2 = at * ele ;
+	a3 = a2 + at;
+	printf ( " \n att = %.1f \t ele = %.1f \t total = %.1f",at,a2,a3);
+		at = at *1.8 ;
+	a2 = at * ele ;
+	a3 = a2 + at;
+	printf ( " \nBONUS\n att = %.1f \t ele = %.1f \t total = %.1f",at,a2,a3);
+}
+}
