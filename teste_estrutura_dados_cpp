@@ -1,0 +1,540 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+
+
+struct lista {
+	
+	float info;
+	struct lista *menor , *maior;
+	struct rpt *Rpt;
+	
+};
+typedef struct lista Lista;
+struct rpt {
+	int qtd ;
+	struct rpt *prox;
+	struct lista *Lt;
+};
+typedef struct rpt repeat;
+
+struct comp {
+	int qtd ;
+	float min , max ;
+	struct comp *prox , *traz;
+	
+};
+typedef struct comp Comp;
+
+Comp *cclass = NULL ,*bclass = NULL,*node = NULL ;
+repeat *INI=NULL;
+float medias =0 , medianas[2] , modag=0 , globcount;
+int mt[2],qtdg =0 , ddm=0 ,finish=0;
+
+
+void imprime (Lista *L){
+	
+	if(L!= NULL){
+		imprime(L->menor);
+		if(L->Rpt == NULL)
+		printf("%.1f   ", L->info);
+		else{
+			for(globcount =0 ;globcount<L->Rpt->qtd ;globcount++)
+			printf("%.1f   ",L->info);
+		}
+		imprime (L->maior);
+		}
+}
+
+
+void imprime2 (Lista *L){
+	
+	if(L!= NULL){
+		imprime2(L->menor);
+		if(L->Rpt == NULL)
+		if(L->info < 10)
+		printf(" %2.1f   |   1\n", L->info);
+		else
+		printf("%2.1f   |   1\n", L->info);
+		else{
+					if(L->info < 10)
+		printf(" %2.1f   |   %2.d\n", L->info);
+		else
+			printf("%2.1f   |  %2.d \n",L->info ,L->Rpt->qtd);
+		}
+		imprime2 (L->maior);
+		}
+}
+
+void addval (Lista **L , float val ){
+	int fim=0;
+	Lista *p =(Lista*) calloc (1 ,sizeof(Lista));
+	p->info = val ;
+		
+		
+	if(*L == NULL){
+		p->maior =NULL;p->menor =NULL;
+		p->Rpt = NULL;
+		*L = p;
+	}
+	else{
+		Lista *aux =*L;
+		do{	if(p->info == aux->info){
+			repeat *n = (repeat*) calloc (1 , sizeof(repeat));
+				if(aux == *L){
+						if((*L)->Rpt == NULL){
+							(*L)->Rpt = n;
+							n->qtd = 2;
+							n->Lt = *L;
+							n->prox = INI;
+							INI= n;
+							fim = 1;
+						}
+						else{
+							(*L)->Rpt->qtd++;
+							fim =1;	
+						}			
+				}
+				else
+				{
+					if(aux->Rpt == NULL)
+					{
+					aux->Rpt = n;
+							n->qtd = 2;
+							n->Lt = aux;
+							n->prox = INI;
+							INI= n;	
+							fim=1;		
+					}	
+					else{
+						aux->Rpt->qtd++;
+						fim =1 ;
+					}	
+				}
+		}
+		else{
+			if(p->info < aux->info){
+					if(aux->menor != NULL){
+						aux = aux->menor ;	
+					}
+					else{
+						aux->menor = p;
+						p->menor = NULL; p->maior = NULL; p->Rpt = NULL;
+						fim =1 ;
+					}
+			}
+			else {
+				if(aux ->maior != NULL){
+					aux = aux->maior;
+				}
+				else {
+					aux -> maior =p;
+					p->menor = NULL; p->maior = NULL; p->Rpt = NULL;
+					fim =1 ;
+				}
+			}
+		}	
+		}while(fim != 1);
+	}
+}
+
+
+void mmm(Lista *aux ){
+	
+		if(aux!= NULL){
+		mmm(aux->menor);
+		if(aux->Rpt == NULL){
+		qtdg++;
+		medias+=aux->info;
+		}
+		else{
+			for(globcount=0 ;globcount<aux->Rpt->qtd ;globcount++,qtdg++)
+			{ if(aux->Rpt->qtd > modag)
+				modag= aux->Rpt->qtd;
+			medias+=aux->info; }
+		}
+		mmm (aux->maior);
+		}
+	
+	
+}
+void makethru( Lista *aux){
+	
+	if(aux != NULL){
+		makethru( aux->menor);
+		globcount++;
+		if(globcount == mt[1])
+		{	medianas[mt[0]]=aux->info;
+			if(mt[0] == 1){
+				mt[1]++;mt[0]--;ddm=1;	
+		}	}
+		makethru(aux->maior);
+		
+		
+	}
+	
+}
+
+
+void simples (Lista **L ){
+	system("CLS");
+	if(*L != NULL){
+		
+	
+	Lista *aux = *L;
+	medias= 0 ,qtdg= 0;
+	mmm(aux);
+
+	if( qtdg % 2 == 0)
+	{	mt[0] = 1 ; mt[1] = qtdg/2;
+		
+	}else{
+	
+	if(qtdg % 2 == 1){
+		mt[0] = 0 ; mt[1] = (qtdg+1)/2;
+	
+	}}
+	
+	globcount = 0;
+	
+	ddm= 0;
+	makethru(aux);
+	
+	system( "CLS");
+	printf(" Valor|  fi\n");
+	imprime2(aux);
+	
+	float flmedia;
+	flmedia = medias/qtdg;
+	printf("XXXXXXXXXXXXX");
+	
+	if(ddm == 1){
+		float fl_1=(medianas[0]+ medianas[1])/2;
+		printf ("\XXXXXXXXXXXXXXX");
+	}else{
+		printf("xxxxxxxxxxxxx");
+	}
+	 if(INI != NULL){
+	 
+	repeat *inst = INI;
+		printf("\n Moda =");
+	for (  ; inst != NULL ; inst= inst->prox)
+		{	if (inst ->qtd == modag)
+			 printf("%d  ", inst->Lt->info);
+		}
+}
+	else{
+		printf("\n Nao Existe Moda.");
+	}
+	getch();
+}else{
+	printf("A LISTA ESTA VAZIA!! ADICIONE VALORES PRIMEIRO!");
+	getch();
+}
+}
+ 
+
+ 
+void fuckitall( Lista *aux){
+	
+	if( aux != NULL){
+		fuckitall( aux->menor);
+		do{
+
+		if( aux->info >= (node->min )&& aux->info < node->max){
+			if(aux->Rpt == NULL)
+			node->qtd++;
+			else{
+				node->qtd+=aux->Rpt->qtd;
+			}
+			
+			break;
+			
+		}else{
+			if(aux->info < node->min )
+			{	if(node->traz!= NULL)
+						node= node->traz;
+			}
+			else{
+					if(aux->info >= node->max){
+					if(node->prox != NULL)
+					node=node->prox;
+			}
+			}
+		}}while(1);
+		fuckitall( aux->maior);
+		
+	}
+	
+	
+	
+}
+
+void Alocar(){
+	
+		Comp *p = (Comp*) calloc (1 , sizeof(Comp));
+		
+			if(node == NULL){
+		
+		p->prox = cclass;
+		p->traz = bclass;
+		node =p; 
+		}
+		else 
+		{	p->prox = cclass;
+			p->traz = node; 
+			node->prox = p;
+			node = p;
+			
+			
+		}
+		
+	
+}
+
+void complex(Lista **L){
+	system ("CLS");
+	if(*L != NULL)
+	{
+	free(node);
+	node = NULL;
+	
+	int fim=0;
+	float lim ,liM , tam ,clastam, T[6] , mmo=0,F[4];
+	Lista *aux = *L;
+	do{
+		if(aux->menor != NULL){
+			aux=aux->menor;
+			continue;
+		}
+		else{
+			if(aux->menor == NULL){
+			lim= aux->info;
+			break;	
+			}
+		}
+	}while(1);
+	aux=*L;
+	do{
+		if(aux->maior != NULL){
+			aux=aux->maior;
+			continue;
+		}
+		else{
+			if(aux->maior == NULL){
+				liM=aux->info;
+				break;
+				
+			}
+		}
+		
+	}while(1);
+	
+	aux= *L;
+	globcount = 0;
+	qtdg = 0 ;
+	mmm( aux);
+	tam = qtdg;
+	clastam = sqrt(tam);
+	int var = 0 ;var = clastam+1;
+	float varr = clastam - var ;
+	if(varr > 0.5)
+		{
+		clastam = clastam+(1-(varr ));
+		var = clastam;}
+	else{
+		clastam = clastam-(varr );
+		var = clastam;
+	}
+	float a[5];
+	a[0]= (liM- lim) +1;      // Tamanho dos numeros total*
+	a[1]= a[0] / clastam ;   // intervalo dos numeros x ~ x 
+	a[2]=lim  ;   			//ira se mover na struct de formação;
+	a[3]=lim+a[1];			//define o segundo parametro,junto com a[2];
+	
+	Comp *p ;
+	int i ;
+	
+	for(i = 0 ; i<var; i++){
+		Alocar();
+		
+		node->min = a[2];a[2]+= a[1];
+		node->max = a[3];a[3]+= a[1];
+		node->qtd = 0;
+		
+	
+		
+	}
+	
+	aux = *L;
+
+		while(1){
+	if(node->prox != NULL)
+		node = node->prox ;
+		else
+		break;
+};
+
+	
+	fuckitall (aux);
+	
+		while(1){
+	if(node->traz != NULL)
+		node = node->traz ;
+		else
+		break;
+};
+	
+
+	T[0],T[1], T[2] ,T[3],T[4]= 0;
+	system("CLS");
+	printf("\t\t Dados Tabulados - - -\n\n\n");
+	printf("Dados         |     fi   |     Xi   |   fi.Xi  |    Fa  |\n");
+	while(1){
+		T[0]=T[0] + node->qtd;
+		printf("  %4.1f |- %4.1f|    %5.i |   %6.1f |   %6.1f |    %4.f\n", node->min,node->max , node->qtd , ((node->max + node->min)/2) , (node->qtd*((node->max + node->min)/2)) , T[0]  );
+		T[1]=T[1] +(node->qtd*((node->max + node->min)/2)) ;
+		T[2]++;
+		if(node->qtd > mmo)
+			mmo=node->qtd;
+			
+		if(node->prox != NULL)
+		node = node->prox;
+		else{
+		break;
+		}
+		
+	}
+
+		while(1){
+	if(node->traz != NULL)
+		node = node->traz ;
+		else
+		break;}
+		
+	
+		float merda =T[0] ,merda1 = T[4];
+		T[5]=0;
+		 F[0],F[1],F[2],F[3],F[4] =0;
+		
+		T[4] = merda/ 2;
+		printf("\n\n\n");
+		if(mmo > 0){
+			printf("Moda =XXXXXXX");
+		}
+		int count=0 , teste=0 ,efe3=0  ;
+		
+		while(1){
+			
+			
+			count=count+node->qtd;
+			
+			if(mmo >0){
+				if(node->qtd!=NULL)
+					{
+					if(node->qtd == mmo){
+			
+					
+				}
+			}}
+		
+		
+		
+			if(teste == 0){
+	
+			if((count-node->qtd)>=T[4] && T[4] <count ){
+			F[0] = 	node->traz->qtd ;F[1] = node->traz->min ; F[2]=(node->max - node->min);efe3 =efe3- node->traz->qtd ;
+				teste=1;
+	
+				}
+				
+					
+					if(teste != 1)
+					efe3+=node->qtd;
+				
+			}
+		
+			if(node->prox!=NULL)
+			{node = node->prox;
+			}
+			else
+			break;
+			
+		}
+		
+	
+		float tt = T[1] / merda ;
+		
+		
+		printf("\nMediana=XXXXXXXXXXX\n" );
+		printf("Media=XXXXXXXXXXXXX" );
+		
+	getch();	
+		
+	}else{
+		printf("A LISTA ESTA VAZIA!! ,Adicione valores primeiro");
+		getch();
+	}
+	
+	}
+
+
+main()
+{
+float val ;
+srand (time(NULL));
+int alea=0 , out =0;
+Lista *L=NULL;
+	while(1)
+	{
+	
+	int tec; 
+	printf("[1]Adicionar um unico Valor \n[2]Moda,Media,Mediana (Simples)\n[3]Moda,Media,Mediana (Tabulada)\n[4]Fazer Tabela com numeros Aleatorios\n[5]Deletar Lista atual\n[0]Sair");
+	do{
+	
+	tec=getch();
+	switch(tec){
+		case 49 : printf("\n\nDigite o valor que deseja adicionar\n");scanf("%f",&val);addval(&L , val);break;
+		case 50 : simples(&L);break;
+		case 51 : complex(&L);	break;
+		case 52 : alea=1; break;
+		case 53 : free(L);L=NULL;break;
+		case 48 :out =1;
+	}
+	
+}while(tec<48 || tec>54);
+	if(out == 1)
+	{break;
+	}
+if(alea == 1){
+	printf("\n\n Digite a quantidade de numeros que deseja adicionar\n");
+	scanf("%d",&alea);
+	val = 0;
+	do{
+		addval(&L , 1+rand() %50);
+		val++;
+	}while(val<alea);
+	
+	
+	
+}
+system("CLS");
+if(L != NULL){
+
+printf("\n\n Lista Atual \n\n");
+imprime(L);
+	printf("\n\n");
+			}
+
+}
+	
+	
+	
+	
+	
+	
+	
+}
