@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct character
+{	int level,clas,wp1lv[2],wp2lv[2],amrlv[3],fairy,slbn[4],attbn[3],defbn[3];
+	char[15] name;
+	
+}
+
+void chardata()
+{
+	FILE* arq; 
+	character upl;
+	
+	
+		arq= fopen("chardata.txt" , "a");
+			if(arq==NULL)
+			{	printf("CRITICAL ERROR");
+				break;
+			}
+		else
+		{	system("CLS");
+			printf("\nFill the next steps ahead with your char information");
+			
+			printf("\n\n\n Class?\n[1]Swordman\n[2]Archer\n[3]Mage");
+			do
+			{
+			upl.clas=getch();
+			}while(upl.clas>48  && upl.clas< 52);
+			upl.clas-48;
+			system("CLS");
+			
+			printf("\nChar Level?\n"); 
+			do
+			{
+			scanf("%d", &upl.level);
+		}while(upl.level<0 && upl.level> 99);
+			
+			printf("Primary Weapon strength \nTip example \n  200 300 or \n200\n300 \n use space or tip twice\n");
+			scanf("%d %d", &upl.wp1lv[0],&upl.wp1lv.[1]);
+			printf("\n\n Do the same thing for your secondary weapon\n");
+			scanf("%d %d", &upl.wp2lv[0],&upl.wp2lv.[1]);
+			print("Put the three defence rates of your armour \nin this sequence,melee ranged and magic below:\n");
+			scanf("%d %d %d",&uppl.amrlv[0],&uppl.amrlv[1],&uppl.amrlv[2]);
+			system("CLS");
+			printf("\n Put your current fairy %");
+			do{
+			
+			scanf("%d",&fairy );
+		}while(fairy<0 && fairy>80);
+		
+	
+	
+	
+	
+	}
+			
+	
+}
+
+
+void teclog( int tamop , int* flecha,int* opt)
+{
+	int tec[2];
+		tec[0]=getch();tec[1]=getch();
+		if(tec[0]== 224)
+		{
+			if ( tec[1] ==72 && *flecha>0)
+				*flecha+1;
+				
+			if ( tec[1] ==80 && *flecha<4)
+				*flecha-1;
+		}
+		
+		else 
+		{	if( tec[0]== 13 )
+			*opt=13;
+		
+		}
+	
+}
+
+
+
+main()
+{	
+	int i , j , k  ,flecha ;
+	char frase[40][5]	;
+	
+	strcpy( "Criar Dados de Character" , frase[0]); strcpy( "Calcular Build" , frase[1]);
+	strcpy( "Calcular Dano" , frase[2]); 			strcpy( "Editar Character" , frase[3]);
+	
+	
+	tamop=4;opt=0;
+	flecha=0;
+	do
+	{
+	
+	teclog(tamop ,&flecha, &opt);
+	system("CLS");
+	switch (flecha)
+		{ case 0 :printf( "-->%s/n   %s/n   %s/n   %s", frase[0],frase[1],frase[2],frase[3]);break;
+		  case 1 :printf( "   %s/n-->%s/n   %s/n   %s", frase[0],frase[1],frase[2],frase[3]);break;
+		  case 2 :printf( "   %s/n   %s/n-->%s/n   %s", frase[0],frase[1],frase[2],frase[3]);break;
+		  case 3 :printf( "   %s/n   %s/n   %s/n-->%s", frase[0],frase[1],frase[2],frase[3]);   	}
+	
+	}while(opt != 13)
+	
+	
+	switch (flecha)
+	{
+		case 0 :chardata();
+		case 1 :buildcal();
+		case 2 : dmgcalc();
+		case 3 :charedit();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
