@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+
+struct lista
+{
+	int num;
+	struct lista* prox;
+};
+
+	struct vdd* anular()
+	{	return NULL;
+		
+	}
+	
+	criacadeado	(vdd* l , int i)
+	{
+		vdd* novo = 
+	}
+	
+main()
+{	int i,opt,num;
+	lista vdd;
+	anular();
+	i=0;
+	
+	
+	printf("valor para struct %d ", i );
+	scanf ( "%d", &vdd.num);
+	printf("\n deseja criar uma outra lista?");
+	scanf("%d",&opt);
+		while(opt==1)
+		{
+		printf("valor para struct %d \n", i );
+		scanf("%d",&num);
+		
+	criacadeado(num ,vdd.prox)
+	
+
+		}
+
+}
+
+
