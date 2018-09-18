@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <time.h>
+
+struct lista
+{
+	int num;
+	struct lista *menor , *maior; 	
+};
+typedef struct lista L;
+
+void addval (L **i , int num)
+{
+
+int fim;
+ L *p = (L*) calloc (1 ,sizeof(L));
+  p->num =num;
+  
+	if(*i == NULL)
+{	
+p->menor=NULL;p->maior=NULL;
+	*i=p;
+	}
+else
+{
+L *aux;  aux=*i;
+for(fim=0;fim<1;)
+{
+	
+	if( aux->num > num )
+	{	if( aux->menor !=NULL)
+			aux= aux->menor;
+		else
+		{
+		aux->menor=p;	
+		fim=1;
+		}
+	}	
+	else
+	{	if( aux->maior != NULL)
+			aux= aux->maior;
+		else
+		{
+		
+		aux->maior=p;
+		fim=1;
+	}
+	}
+	}
+	}	
+	}
+	
+ void leitura ( L *i)
+ {
+ 	if((i) != NULL)
+ 	{
+ 		leitura (  ((i)->menor));
+ 		printf("%d  ",(i)->num);
+ 		leitura ( ((i)->maior));
+ 	}
+}
+ 	
+
+main()
+{	int n,k,num;
+	L *i;
+	i=NULL;
+	srand(time(NULL));
+		printf("Quantidade de numeros aleatorios \n");
+ scanf("%d", &n);
+	for(k=0;k<n;k++)
+	{num=rand()% 100000;
+	addval(&i,num);
+	
+	}
+	leitura(i);
+	getch();
+}
